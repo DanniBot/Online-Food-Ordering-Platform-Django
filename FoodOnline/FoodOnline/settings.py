@@ -128,7 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR,"STATIC")
+MEDIA_ROOT = os.path.join(BASE_DIR,"static")
 STATICFILES_DIRS=[
     'FoodOnline/static',
 ]
@@ -142,3 +142,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from django.contrib.messages import constant as messages
+MESSAGE_TAGS={
+    messages.ERROR: 'danger',
+}

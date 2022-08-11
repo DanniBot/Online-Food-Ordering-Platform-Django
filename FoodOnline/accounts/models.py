@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.db.models.fields.related import ForeignKey, OneToOneField
+from django.db.models.signals import post_save,pre_save
+from django.dispatch import receiver
 
 # from django.contrib.gis.db import models as gismodels
 # from django.contrib.gis.geos import Point
 
 # Create your models here.
 class UserManager(BaseUserManager):
+    
     def create_user(self,first_name,last_name,username,email,password=None):
         if not email:
             raise ValueError('Email address is required')
@@ -99,5 +102,6 @@ class UserProfile(models.Model):
 
     def __str__(self) -> str:
         return self.user.email
+
 
     
