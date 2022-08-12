@@ -9,7 +9,7 @@ from django.dispatch import receiver
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    
+
     def create_user(self,first_name,last_name,username,email,password=None):
         if not email:
             raise ValueError('Email address is required')
@@ -43,11 +43,11 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser):
-    RESTAURANT=1
+    VENDOR=1
     CUSTOMER=2
 
     ROLE_CHOICE=(
-        (RESTAURANT,'Restaurant'),
+        (VENDOR,'Vendor'),
         (CUSTOMER, 'Customer')
     )
 

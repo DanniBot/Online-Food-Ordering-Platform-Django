@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'vendor',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +144,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-from django.contrib.messages import constant as messages
-MESSAGE_TAGS={
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
