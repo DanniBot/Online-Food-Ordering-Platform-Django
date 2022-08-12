@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<strong>
+    <p>Sorry! You are not authorized to view this page.
+        <a href="{% url 'home' %}">Back to homepage</a>
+    </p>
+    
+</strong>
+
+{% include 'includes/alert.html' %}
+{% endblock %}
