@@ -1,0 +1,10 @@
+{% autoescape off %}
+Hi {{user.username}},
+
+{% if is_approved %}
+your are now all set! Your registration request for your restaurant has been approved by our admin team.
+{% else %}
+we are sorry to inform you that you are not eligible for registering your restaurant on foodOnline. For more details, please contact support@foodonline.com.
+{% endif %}
+-- foodOnline team
+{% endautoescape %}
