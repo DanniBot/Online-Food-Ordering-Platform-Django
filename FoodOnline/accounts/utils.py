@@ -6,6 +6,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 
 
 def detectUser(user):
@@ -40,3 +41,17 @@ def send_notification(mail_subject,mail_template,context):
     to_email=context['user'].email
     mail=EmailMessage(mail_subject,message,from_email,to=[to_email])
     mail.send()
+
+# Restrict vendors from accessing customer pages
+def check_role_vendor(user):
+    if user.role==1:
+        return True
+    else:
+        raise PermissionDenied
+
+# Restrict customers from accessing vendor pages
+def check_role_cust(user):
+    if user.role==2:
+        return True
+    else:
+        raise PermissionDenied
