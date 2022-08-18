@@ -69,14 +69,17 @@ def fooditems_by_category(request,pk=None):
     return render(request,'vendor/fooditems_by_category.html',context=context)
 
 @login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def add_cat(request):
     if request.method=='POST':
         form=CategoryForm(request.POST)
         if form.is_valid():
             category=form.save(commit=False)
             category.vendor=get_vendor(request)
-            category.slug=slugify(form.cleaned_data['category_name'])
-            form.save()
+            # category.slug=slugify(form.cleaned_data['category_name'])
+            category.save() ##get cat's id
+            category.slug=slugify(category.category_name)+'-'+str(category.id)
+            category.save() 
             messages.success(request,'Category added successfully!')
             return redirect('menu_builder')
         else:

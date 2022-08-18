@@ -18,7 +18,11 @@
                             <div class="listing-sorting-holder">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4>{{ v_count }} Restaurant's found</h4>
+                                        {% if count <= 1 %}
+                                        <h4>{{ count }} Restaurant found</h4>
+                                        {% else %}
+                                        <h4>{{ count }} Restaurants found</h4>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -31,9 +35,10 @@
                                             <figure>
                                                 <a href="#">
                                                     {% if vendor.user_profile.profile_picture %}
-                                                    <img src="{{ vendor.user_profile.profile_picture.url }}" class="img-list wp-post-image" alt="">
+                                                    <a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{{ vendor.user_profile.profile_picture.url }}" class="img-list wp-post-image" alt=""></a>
+                                                    
                                                     {% else %}
-                                                    <a href="#"><img src="{% static 'images/avatar.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
+                                                    <a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{% static 'images/avatar.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
                                                     {% endif %}
                                                 
                                                 </a>

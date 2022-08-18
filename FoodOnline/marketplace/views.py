@@ -1,10 +1,11 @@
+from ctypes import addressof
 from multiprocessing import context
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Cart
 from menu.models import Category,foodItem
 from vendor.models import Vendor
-from django.db.models import Prefetch
+from django.db.models import Prefetch,Q
 from .context_processor import get_cart_counter, get_cart_amount
 from django.contrib.auth.decorators import login_required
 
@@ -117,5 +118,20 @@ def del_cart(request,cart_id):
         else:
             return JsonResponse({'status':'Fail','message':'Invalid request.'})
 
-
                 
+def search(request):
+    address=request.GET['address']
+    latitude=request.GET['lat']
+    longitude=request.GET['lng']
+    radius=request.GET['radius']
+    keyword=request.GET['keyword']
+
+    #get vendor ids that has the food item user is looking for
+    fetch_vendors_by_fooditems=foodItem.objects.filter(food_name__icontains=keyword,is_available=True).values_list('vendor',flat=True)
+    vendors=Vendor.objects.filter(Q(id__in=fetch_vendors_by_fooditems) | Q(vendor_name__icontains=keyword,is_approved=True,user__is_active=True))
+    count=vendors.count()
+    context={
+        'vendors':vendors,
+        'count':count,
+    }
+    return render(request,'marketplace/listings.html',context)
