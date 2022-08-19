@@ -56,7 +56,16 @@
                                             {% if vendor.user_profile.city and vendor.user_profile.state %}
                                             <span>{{ vendor.user_profile.address }}</span>
                                             {% endif %}
-                                            
+                                            {% if source_loc %}
+                                            <br>
+                                            <span>
+                                                {% if vendor.mile is 1 or vendor.mile is 0 %}
+                                                <small><b>{{vendor.mile}}mile</b> away from {{source_loc}}</small>
+                                               {% else %}
+                                               <small><b>{{vendor.mile}}miles</b> away from {{source_loc}}</small>
+                                               {% endif %}
+                                            </span>
+                                            {% endif %}
                                         </div>
                                         <div class="list-option">
 

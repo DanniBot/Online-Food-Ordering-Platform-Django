@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'accounts',
     'vendor',
     'menu',
@@ -87,11 +88,13 @@ WSGI_APPLICATION = 'FoodOnline.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD':config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
+        'PORT':config('DB_PORT'),
     }
 }
 
@@ -165,3 +168,5 @@ DEFAULT_FROM_EMAIL='foodOnline Marketplace <foodonline.kira@gmail.com>'
 
 
 GOOGLE_API_KEY='AIzaSyApkHFBPALXDXs9wYWwWpDIfIq8sDrHIvg'
+
+

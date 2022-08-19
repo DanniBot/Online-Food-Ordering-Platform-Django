@@ -54,10 +54,12 @@
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                     <select name="radius" id="radius" style="height:50px;" required>
                                         <option value="" selected>Choose Radius</option>
-                                        <option value="5">5km</option>
-                                        <option value="10">10km</option>
-                                        <option value="15">15km</option>
-                                        <option value="20">20km</option>
+                                        <option value="1">1 mile</option>
+                                        <option value="2">2 mile</option>
+                                        <option value="3">3 mile</option>
+                                        <option value="4">4 mile</option>
+                                        <option value="5">5 mile</option>
+                                        <option value="6">6 mile</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
@@ -147,6 +149,15 @@
                                         </div>
                                         {% if vendor.user_profile.city and vendor.user_profile.state %}
                                         <span>{{ vendor.user_profile.city }},{{ vendor.user_profile.state }}</span>
+                                        {% endif %}
+
+                                        {% if vendor.mile %}
+                                        <br>
+                                        {% if vendor.mile is 1%}
+                                        <span><small><b>{{vendor.mile}}mile</b> away</small></span>
+                                        {% else %}
+                                        <span><small><b>{{vendor.mile}}miles</b> away</small></span>
+                                        {% endif %}
                                         {% endif %}
                                     </div>
                                     
