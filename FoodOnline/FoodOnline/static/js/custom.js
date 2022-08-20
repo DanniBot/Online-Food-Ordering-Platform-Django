@@ -112,17 +112,14 @@ $(document).ready(function(){
     })
 
     
-//place the cart item quantity on load
-$('.item_qty').each(function(){
-    var the_id=$(this).attr('id')
-    var qty=$(this).attr('data-qty')
-    $('#'+the_id).html(qty)
-})
-    
-});
+    //place the cart item quantity on load
+    $('.item_qty').each(function(){
+        var the_id=$(this).attr('id')
+        var qty=$(this).attr('data-qty')
+        $('#'+the_id).html(qty)
+    })
 
 
-$(document).ready(function(){
     //decrease
     $('.decrease_cart').on('click',function(e){
         e.preventDefault();
@@ -168,19 +165,8 @@ $(document).ready(function(){
         )
     })
 
-    //place the cart item quantity on load
-    // $('.item_qty').each(function(){
-    //     var the_id=$(this).attr('id')
-    //     var qty=$(this).attr('data-qty')
-    //     $('#'+the_id).html(qty)
-    // })
-});
-
-
-// delete cart item
-$(document).ready(function(){
-    //decrease
-    $('.del_cart').on('click',function(e){
+     // delete cart item
+     $('.del_cart').on('click',function(e){
         e.preventDefault();
 
         
@@ -219,51 +205,116 @@ $(document).ready(function(){
         }
         )
     })
-
     
 
+    // Check if the cart is empty
+    function checkEmptyCart(){
+        var cart_counter = document.getElementById('cart_counter').innerHTML
+        if(cart_counter == 0){
+            document.getElementById("empty-cart").style.display = "block";
+            }
+        };
 
-    
+    // apply cart amounts
+    function applyCartAmounts(subtotal,tax,total){
+        if(window.location.pathname == '/cart/'){
+            if(window.location.pathname=='/cart/'){
+                $('#subtotal').html(subtotal)
+                $('#total').html(total)
+                $('#tax').html(tax)
+            }
+            
 
+            // console.log(tax_dict)
+            // for(key1 in tax_dict){
+            //     console.log(tax_dict[key1])
+            //     for(key2 in tax_dict[key1]){
+            //         // console.log(tax_dict[key1][key2])
+            //         $('#tax-'+key1).html(tax_dict[key1][key2])
+            //     }
+            // }
+        }
+
+    }
+
+
+    $('.add_hour').on('click',function(e){
+        e.preventDefault();
+        var day=document.getElementById('id_day').value
+        var from_hour=document.getElementById('id_from_hour').value
+        var to_hour=document.getElementById('id_to_hour').value
+        var is_closed=document.getElementById('id_is_closed').checked
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+        var url = document.getElementById('add_hours_url').value
+        console.log(day,from_hour,to_hour,is_closed,csrf_token)
+        if(is_closed){
+            is_closed='True'
+            condition="day != ''"
+        }else{
+            is_closed='False'
+            condition="day != '' && from_hour != '' && to_hour !=''"
+        }
+
+        if(eval(condition)){
+            $.ajax({
+                type:'POST',
+                url:url,
+                data:{
+                    'day':day,
+                    'from_hour':from_hour,
+                    'to_hour':to_hour,
+                    'is_closed':is_closed,
+                    'csrfmiddlewaretoken':csrf_token,
+                },
+                success:function(response){
+                    if (response.status=='Success'){
+                        if(response.is_closed == 'Closed'){
+                            
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>Closed</td><td><a href="#" class="remove_hours" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
+                        }else{
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>'+response.from_hour+' - '+response.to_hour+'</td><td><a href="#" class="remove_hours" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
+                        }
+                        $(".opening_hours").append(html)
+                        document.getElementById("opening_hours").reset();
+                    }else{
+                        swal(response.message, '', "error")
+                    }
+                }
+            })
+        }else{
+            swal('Please fill out all the fields.','','info')
+        }
+    })
+
+
+    //remove hour
+    $(document).on('click', '.remove_hours', function(e){
+        e.preventDefault();
+        url = $(this).attr('data-url');
+        
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response){
+                if(response.status == 'Success'){
+                    document.getElementById('hour-'+response.id).remove()
+                }
+            }
+        })
+    })
+
+
+    //document ready close
 });
 
-//delete the cart element is the qty is 0
-function removeCartItem(cartItemQty,cart_id) {
-    if(window.location.pathname=='/cart/'){
-        if(cartItemQty<=0){
-            //remove cart element
-            document.getElementById('cart-item-'+cart_id).remove()
-        }
-    }
-    
-};
 
-// Check if the cart is empty
-function checkEmptyCart(){
-    var cart_counter = document.getElementById('cart_counter').innerHTML
-    if(cart_counter == 0){
-        document.getElementById("empty-cart").style.display = "block";
-    }
-};
 
-// apply cart amounts
-function applyCartAmounts(subtotal,tax,total){
-    if(window.location.pathname == '/cart/'){
-        if(window.location.pathname=='/cart/'){
-            $('#subtotal').html(subtotal)
-            $('#total').html(total)
-            $('#tax').html(tax)
-        }
-        
 
-        // console.log(tax_dict)
-        // for(key1 in tax_dict){
-        //     console.log(tax_dict[key1])
-        //     for(key2 in tax_dict[key1]){
-        //         // console.log(tax_dict[key1][key2])
-        //         $('#tax-'+key1).html(tax_dict[key1][key2])
-        //     }
-        // }
-    }
-}
+
+
+
+
+
+
+
 

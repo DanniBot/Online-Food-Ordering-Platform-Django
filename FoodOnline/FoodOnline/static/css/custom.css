@@ -15,11 +15,24 @@
 }
 
 .btn{
-    padding: 2px 1.75em;
-    font-size: 12px;
+    /* height:auto !important; */
+    padding: 2px 1.75em !important;
+    font-size: 12px !important;
     cursor: pointer;
 }
 
 .main-search.fancy .field-holder input[type='text']{
     color: black !important;
+}
+
+table > tbody > tr > td{
+    border: none !important;
+}
+
+#opening_hours select{
+    padding: 5px 10px !important;
+}
+
+.btn-success.add_hour{
+    padding: 7px 15px 7px 15px !important;
 }
