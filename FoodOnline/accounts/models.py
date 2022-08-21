@@ -92,7 +92,7 @@ class User(AbstractBaseUser):
 
 
 class UserProfile(models.Model):
-    user=OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True) 
+    user = OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     profile_picture = models.ImageField(upload_to='users/profile_pictures', blank=True, null=True)
     cover_photo = models.ImageField(upload_to='users/cover_photos', blank=True, null=True)
     address = models.CharField(max_length=160, blank=True, null=True)
@@ -116,3 +116,7 @@ class UserProfile(models.Model):
         if self.latitude and self.longitude:
             self.location=Point(float(self.longitude),float(self.latitude))
             return super(UserProfile,self).save(*args,**kwargs)
+        else:
+            return super(UserProfile,self).save(*args,**kwargs)
+
+

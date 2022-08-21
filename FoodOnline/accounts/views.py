@@ -1,5 +1,3 @@
-from email.policy import default
-from multiprocessing import context
 from django.shortcuts import render,redirect
 from .utils import detectUser,send_email,check_role_cust,check_role_vendor
 from django.utils.http import urlsafe_base64_decode
