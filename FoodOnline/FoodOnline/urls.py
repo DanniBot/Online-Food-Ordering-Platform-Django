@@ -29,5 +29,7 @@ urlpatterns = [
 
     path('search/',m_views.search,name='search'),
 
+    path('checkout/',m_views.checkout,name='checkout'),
+
 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -23,7 +23,7 @@
                             
                             <h5 class="text-uppercase">Profile Settings</h5>
 
-                            <form action="{% url 'c_profile' %}" method="post" enctype="multipart/form-data">
+                            <form action="{% url 'c_profile' %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="form-fields-set">
                                     <ul>
