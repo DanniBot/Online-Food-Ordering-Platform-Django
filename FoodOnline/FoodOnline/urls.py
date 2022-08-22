@@ -31,5 +31,7 @@ urlpatterns = [
 
     path('checkout/',m_views.checkout,name='checkout'),
 
+    path('orders/',include('orders.urls')),
+
 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -19,10 +19,10 @@
         <div class="container">
             <div class="row">
                 
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger"></i>Cart Items</a></li>
+                            <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger"></i>Review Your Billing Address</a></li>
                             
                         </ul>
                         <div class="tab-content">
@@ -34,37 +34,23 @@
                                     <div id="menu-item-list-6272" class="menu-itam-list">
                                         
                                         
-                                        <ul>
-                                            {% if cart_items %}
-                                            {% for item in cart_items %}
-                                            <li id="cart-item-{{item.id}}">
-                                                <div class="image-holder"><img src="{{item.fooditem.image.url}}" alt=""></div>
-                                                <div class="text-holder">
-                                                    <h6>{{item.fooditem}}</h6>
-                                                    <!-- <span>{{item.fooditem.description}}</span> -->
-                                                    <a href="{% url 'vendor_detail' item.fooditem.vendor.vendor_slug %}" class="badge badge-light">{{item.fooditem.vendor}}</a>
-                                                </div>
-                                                <div class="price-holder">
-                                                    <span class="price">${{item.fooditem.price}}</span>
-                                                    <a href="#" class="add_to_cart" style="margin-right: 26px;" data-id="{{item.fooditem.id}}" data-url="{% url 'add_to_cart' item.fooditem.id %}"><i class="icon-plus4 text-color"></i></a>
-                                                    <label id="qty-{{item.fooditem.id}}">0</label>
-                                                    <a href="#" class="decrease_cart" data-id="{{item.fooditem.id}}" id="{{item.id}}" data-url="{% url 'decrease_cart' item.fooditem.id %}"><i class="icon-minus text-color"></i></a>
-                                                    <a href="#" class="del_cart" style="margin-right: 26px;" data-id="{{item.id}}" data-url="{% url 'del_cart' item.id %}"><i class="icon-trash text-color"></i></a> 
-                                                </div>
-                                            </li>
-                                            {% endfor %}
-                                            {% else %}
-                                                <div class="text-center p-5">
-                                                    <h3 style="color: grey;">Cart is empty.</h3>
-                                                </div>
-                                            {% endif %}
-                                        </ul>
+                                        <div class="billing-address">
+                                            <div><b>{{order.name}}</b></div>
+                                            <div>{{order.address}}</div>
+                                            <div>{{order.city}}</div>
+                                            <div>{{order.state}}</div>
+                                            <div>{{order.country}}</div>
+                                            <div>{{order.pin_code}}</div>
+                                            <div><b>Email: </b>{{order.email}}</div>
+                                            <div><b>Phone Number: </b>{{order.phone}}</div>
+                                            <br>
+                                            <div><a href="{% url 'checkout' %}" class="btn btn-outline-danger">Edit</a></div>
+                                            <br>
+                                        </div>
                                         
 
                                     </div>
-                                   {% for item in cart_items %}
-                                   <span id="qty-{{item.fooditem.id}}" class="item_qty d-none" data-qty="{{item.quantity}}">{{item.quantity}}</span>
-                                   {% endfor %}
+                                   
                                 </div>
                             </div>
                             
@@ -73,7 +59,7 @@
                 </div>
 
                 <!--Your order section-->
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your Order</a></li>
@@ -82,7 +68,22 @@
                         <div class="tab-content">
                             <div id="home" class="tab-pane in active">
                                 <div class="menu-itam-holder">
+
                                     <div>
+
+                                        <table class="table">
+                                            <tbody>
+                                                {% for item in cart_items %}
+                                                <tr>
+                                                    <td><img src="{{ item.fooditem.image.url }}" width="40" alt="Food Image"></td>
+                                                    <td><b>{{ item.fooditem }}</b></td>
+                                                    <td>{{ item.quantity }}</td>
+                                                    <td>${{ item.fooditem.price }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+
                                         <ul>
                                             <li style="list-style-type:none;">
                                                 Subtotal
@@ -106,7 +107,7 @@
                                                 </span>
                                             </li>
 
-                                            <a href="{% url 'checkout' %}" class="btn btn-danger w-100 p-2 mt-3 text-uppercase">Proceed to Checkout</a>
+                                            <a href="#" class="btn btn-danger w-100 p-2 mt-3 text-uppercase" id="place_order">Proceed to Checkout</a>
                                         </ul>
                                     </div>
                                    
@@ -121,4 +122,64 @@
     </div>
 </div>
 <!-- Main Section End -->
+
+
+<script>
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+        $('#place_order').click(function(e){
+        e.preventDefault();
+        
+        var url="{% url 'payments' %}"
+        var order_number="{{order.order_number}}"
+        const csrftoken = getCookie('csrftoken');
+        var order_complete = "{% url 'order_complete' %}"
+    
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                'order_number': order_number,
+                'payment_method': 'PayPal',
+                'status': 'COMPLETED',
+                'csrfmiddlewaretoken': csrftoken,
+            },
+            success: function(response){
+                console.log('response==>', response)
+                window.location.href = order_complete +'?order_no='+response.order_number+'&trans_id='+response.transaction_id
+            }
+        })
+
+        const element = document.getElementById('place_order');
+        element.innerHTML = '';
+        element.innerHTML = '<h4 class="text-center"><i class="fa fa-spinner fa-spin"></i> Please wait...</h4>';
+    
+    })
+        
+    
+
+     // Send the data to payments view to store in the database
+
+    
+
+
+
+</script>
+
+
 {% endblock %}

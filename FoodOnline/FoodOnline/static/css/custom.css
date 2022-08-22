@@ -36,3 +36,16 @@ table > tbody > tr > td{
 .btn-success.add_hour{
     padding: 7px 15px 7px 15px !important;
 }
+
+.pyment-method[type-radio]{
+    position: absolute;
+    opacity: 0;
+    width:0;
+    height: 0;
+}
+
+.pyment-method[type-radio]+img{
+    cursor: pointer;
+    outline: 1px solid orange;
+}
+

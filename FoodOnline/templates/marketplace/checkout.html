@@ -19,7 +19,7 @@
         <div class="container">
             <div class="row">
                 
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger"></i>Billing Address</a></li>
@@ -33,7 +33,7 @@
                                         
                                         
                                    
-                                    <form action="#" method="post"></form>
+                                    <form action="{% url 'place_order' %}" method="post">
                                         {% csrf_token %}
 
                                         
@@ -79,7 +79,7 @@
                 </div>
 
                 <!--Your order section-->
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                     <div class="tabs-holder horizontal">
                         <ul class="stickynav-tabs nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your Order</a></li>
@@ -93,7 +93,7 @@
                                         
                                         
                                         <ul>
-                                            {% if cart_items %}
+                                    
                                             {% for item in cart_items %}
                                             <li id="cart-item-{{item.id}}">
                                                 <div class="image-holder"><img src="{{item.fooditem.image.url}}" alt=""></div>
@@ -110,11 +110,8 @@
                                                 </div>
                                             </li>
                                             {% endfor %}
-                                            {% else %}
-                                                <div class="text-center p-5">
-                                                    <h3 style="color: grey;">Cart is empty.</h3>
-                                                </div>
-                                            {% endif %}
+                                            
+                                 
                                         </ul>
                                         
 
@@ -130,7 +127,7 @@
                                                 </span>
                                             </li>
                                             <li style="list-style-type:none;">
-                                                tax
+                                                Tax
                                                 <span class="price float-right">
                                                     <span class="currency">$</span>
                                                     <span id="tax">{{tax}}</span>
@@ -144,6 +141,14 @@
                                                 </span>
                                             </li>
 
+                                            <br>
+                
+                                            <div class="payment-method" >
+                                                <label for="">
+                                                    <input type="radio" name="payment_method" value="PayPal" checked>
+                                                    <img src="{% static 'images/PayPal.png' %}" alt="PayPal" width="100">
+                                                </label>
+                                            </div>
                                             <button type="submit"  class="btn btn-danger w-100 p-2 mt-3">PLACE ORDER</button>
                                         </ul>
                                     </form>
