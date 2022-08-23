@@ -3,10 +3,10 @@
 {% block content %}
 {% include 'includes/alert.html' %}
 {% load static %}
-<!-- Main Section Start -->
 <div class="main-section">
-    
+
     {% include 'includes/cover.html' %}
+
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
@@ -20,46 +20,9 @@
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                     <div class="user-dashboard loader-holder">
                         <div class="user-holder">
-                            <h5 class="text-uppercase">Overview</h5>
-                            <p class="text-right">Logged in as: {{user.email}}</p>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Total orders
-                                        </div>
-                                        <div class="card-body text-center">
-                                            <a href="#"><h5 class="card-title">{{orders_count}}</h5></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Total revenue
-                                        </div>
-                                        <div class="card-body text-center">
-                                            
-                                            <a href="#"><h5 class="card-title">$ {{total_revenue}}</h5></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Monthly revenue
-                                        </div>
-                                        <div class="card-body text-center">
-                                            
-                                            <a href="#"><h5 class="card-title">$ {{current_month_revenue}}</h5></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <h5 class="text-uppercase">Recent Orders</h5>
+                           
+                        
+                            <h5 class="text-uppercase">My Orders</h5>
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="user-orders-list">
@@ -77,7 +40,7 @@
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for order in recent_orders %}
+                                                    {% for order in orders %}
                                                   <tr>
                                                     
                                                     <td>{{order.order_number}}</td>

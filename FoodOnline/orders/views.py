@@ -1,5 +1,6 @@
 from multiprocessing import context
 from django.shortcuts import render, redirect
+from menu.models import foodItem
 from marketplace.models import Cart
 from marketplace.context_processor import get_cart_amount
 from .forms import OrderForm
@@ -18,6 +19,30 @@ def place_order(request):
     cart_count=cart_items.count()
     if cart_count<=0:
         return redirect('marketplace')
+
+    vendors_ids = []
+    for i in cart_items:
+        if i.fooditem.vendor.id not in vendors_ids:
+            vendors_ids.append(i.fooditem.vendor.id)
+
+    total_data = {}
+    k = {}
+
+    for i in cart_items:
+        fooditem = foodItem.objects.get(pk=i.fooditem.id, vendor_id__in=vendors_ids)
+        v_id = fooditem.vendor.id
+        if v_id in k:
+            subtotal = k[v_id]
+            subtotal += (fooditem.price * i.quantity)
+            k[v_id] = subtotal
+        else:
+            subtotal = (fooditem.price * i.quantity)
+            k[v_id] = subtotal
+
+        total_data.update({fooditem.vendor.id: str(subtotal)})
+
+
+
 
     subtotal=get_cart_amount(request)['subtotal']
     tax=get_cart_amount(request)['tax']
@@ -40,9 +65,11 @@ def place_order(request):
             order.total = total
             # order.total_data = json.dumps(total_data)
             order.tax = tax
+            order.total_data = json.dumps(total_data)
             order.payment_method = request.POST['payment_method']
             order.save() # order id/ pk is generated
             order.order_number = generate_order_number(order.id)
+            order.vendors.add(*vendors_ids)
             order.save()
             # order.vendors.add(*vendors_ids)
             context={

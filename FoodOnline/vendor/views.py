@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.utils import check_role_vendor
 from menu.forms import CategoryForm,foodAddForm,foodEditForm
 from django.template.defaultfilters import slugify
+from orders.models import Order,OrderedFood
 
 
 def get_vendor(request):
@@ -224,3 +225,30 @@ def remove_hours(request,pk=None):
             hour.delete()
             response={'status':'Success','id':pk}
             return JsonResponse(response)
+
+
+def order_detail(request, order_number):
+    try:
+        order = Order.objects.get(order_number=order_number, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor=get_vendor(request))
+
+        context = {
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal': order.get_total_by_vendor()['subtotal'],
+            'tax': round(order.get_total_by_vendor()['tax'],2),
+            'total': order.get_total_by_vendor()['grand_total'],
+        }
+    except:
+        return redirect('vendor')
+    return render(request, 'vendor/order_detail.html', context)
+
+
+def my_orders(request):
+    vendor = Vendor.objects.get(user=request.user)
+    orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('created_at')
+
+    context = {
+        'orders': reversed(orders),
+    }
+    return render(request, 'vendor/my_orders.html', context)
