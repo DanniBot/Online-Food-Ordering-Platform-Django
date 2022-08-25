@@ -1,0 +1,25 @@
+@keyframes show-toast{
+    0% {bottom: -100%}
+    20% {bottom: 100px}
+    80% {bottom: 100px}
+    100% {bottom: -100%}
+}
+
+.notification{
+    position: fixed;
+    bottom: 100%;
+    right: 20px;
+    animation-name: show-toast;
+    animation-duration: 8s;
+    z-index: 99;
+}
+
+.btn{
+    padding: 2px 1.75em;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.main-search.fancy .field-holder input[type='text']{
+    color: black !important;
+}

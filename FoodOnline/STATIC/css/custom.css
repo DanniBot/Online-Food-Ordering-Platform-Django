@@ -1,0 +1,51 @@
+@keyframes show-toast{
+    0% {bottom: -100%}
+    20% {bottom: 100px}
+    80% {bottom: 100px}
+    100% {bottom: -100%}
+}
+
+.notification{
+    position: fixed;
+    bottom: 100%;
+    right: 20px;
+    animation-name: show-toast;
+    animation-duration: 8s;
+    z-index: 99;
+}
+
+.btn{
+    /* height:auto !important; */
+    padding: 2px 1.75em !important;
+    font-size: 12px !important;
+    cursor: pointer;
+}
+
+.main-search.fancy .field-holder input[type='text']{
+    color: black !important;
+}
+
+table > tbody > tr > td{
+    border: none !important;
+}
+
+#opening_hours select{
+    padding: 5px 10px !important;
+}
+
+.btn-success.add_hour{
+    padding: 7px 15px 7px 15px !important;
+}
+
+.pyment-method[type-radio]{
+    position: absolute;
+    opacity: 0;
+    width:0;
+    height: 0;
+}
+
+.pyment-method[type-radio]+img{
+    cursor: pointer;
+    outline: 1px solid orange;
+}
+
